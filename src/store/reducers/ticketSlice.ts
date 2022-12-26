@@ -44,25 +44,36 @@ export const ticketSlice = createSlice({
 
     ticketsFilterByStops(state, action: PayloadAction<IFilter>) {
       const filterGetByUser = action.payload;
-      state.filters.forEach((filter) => {
-        if (filter.name === filterGetByUser.name) {
-          filter.isActive = filterGetByUser.isActive;
-        }
-      });
+      if (filterGetByUser.value === -1) {
+        state.filters.forEach((filter) => {
+          filter.isActive = true;
+        });
+      } else {
+        state.filters.forEach((filter) => {
+          if (filter.name === filterGetByUser.name) {
+            filter.isActive = filterGetByUser.isActive;
+          }
+        });
+      }
 
       const activeFilters = current(state.filters).filter(
         (filter) => filter.isActive
       );
-      const accTicketsArr: ITicket[] = [];
-      activeFilters.forEach((filter) => {
-        const matchTickets = state.tickets.filter(
-          (ticket) => ticket.stops === filter.value
-        );
-        matchTickets.forEach((ticket) => {
-          accTicketsArr.push(ticket);
+
+      if (activeFilters.length === 0) {
+        state.filteredTickets = state.tickets;
+      } else {
+        let accTicketsArr: ITicket[] = [];
+        activeFilters.forEach((filter) => {
+          const matchTickets = state.tickets.filter(
+            (ticket) => ticket.stops === filter.value
+          );
+          matchTickets.forEach((ticket) => {
+            accTicketsArr.push(ticket);
+          });
         });
-      });
-      state.filteredTickets = accTicketsArr;
+        state.filteredTickets = accTicketsArr;
+      }
     },
   },
 });

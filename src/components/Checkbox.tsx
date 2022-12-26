@@ -10,7 +10,7 @@ type CheckboxProps = {
 export const Checkbox = ({ filter }: CheckboxProps) => {
   const dispatch = useAppDispatch();
 
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(filter.isActive);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked((prev) => !prev);
