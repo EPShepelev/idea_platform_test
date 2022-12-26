@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "../hooks/redux";
 import { IFilter } from "../types/IFilter";
 import { ticketsFilterByStops } from "../store/reducers/ticketSlice";
@@ -11,6 +11,10 @@ export const Checkbox = ({ filter }: CheckboxProps) => {
   const dispatch = useAppDispatch();
 
   const [isChecked, setIsChecked] = useState(filter.isActive);
+
+  useEffect(() => {
+    setIsChecked(filter.isActive);
+  }, [filter.isActive]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked((prev) => !prev);
