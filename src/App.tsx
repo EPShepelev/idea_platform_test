@@ -7,7 +7,7 @@ import { fetchTickets } from "./store/reducers/ActionCreators";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { filtredTickets } = useAppSelector((state) => state.ticketReducer);
+  const { filteredTickets } = useAppSelector((state) => state.ticketReducer);
 
   useEffect(() => {
     dispatch(fetchTickets());
@@ -17,7 +17,7 @@ function App() {
     <div className="container">
       <div className="content">
         <Aside />
-        <List tickets={filtredTickets} />
+        <List tickets={filteredTickets} />
       </div>
     </div>
   );

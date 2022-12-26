@@ -5,14 +5,14 @@ import { ITicket } from "../../types/ITicket";
 interface TicketState {
   tickets: ITicket[];
   filters: IFilter[];
-  filtredTickets: ITicket[];
+  filteredTickets: ITicket[];
   isLoading: boolean;
   error: string;
 }
 
 const initialState: TicketState = {
   tickets: [],
-  filtredTickets: [],
+  filteredTickets: [],
   filters: [
     { name: "Все", value: -1, isActive: false },
     { name: "Без пересадок", value: 0, isActive: false },
@@ -35,7 +35,7 @@ export const ticketSlice = createSlice({
       state.isLoading = false;
       state.error = "";
       state.tickets = action.payload;
-      state.filtredTickets = action.payload;
+      state.filteredTickets = action.payload;
     },
     ticketsFetchingError(state, action: PayloadAction<string>) {
       state.isLoading = false;
@@ -55,11 +55,11 @@ export const ticketSlice = createSlice({
       );
       console.log("!!!", activeFilters, current(state.filters));
       activeFilters.forEach((filter) => {
-        const filtredTickets = state.tickets.filter(
+        const filteredTickets = state.tickets.filter(
           (ticket) => ticket.stops === filter.value
         );
-        console.log(filtredTickets);
-        state.filtredTickets = filtredTickets;
+        console.log(filteredTickets);
+        state.filteredTickets = filteredTickets;
       });
     },
   },
