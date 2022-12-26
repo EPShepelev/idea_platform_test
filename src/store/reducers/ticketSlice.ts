@@ -1,16 +1,18 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { IFilter } from "../../types/IFilter";
 import { ITicket } from "../../types/ITicket";
 
 interface TicketState {
   tickets: ITicket[];
   filters: IFilter[];
+  filtredTickets: ITicket[];
   isLoading: boolean;
   error: string;
 }
 
 const initialState: TicketState = {
   tickets: [],
+  filtredTickets: [],
   filters: [
     { name: "Все", value: -1, isActive: false },
     { name: "Без пересадок", value: 0, isActive: false },
@@ -33,6 +35,7 @@ export const ticketSlice = createSlice({
       state.isLoading = false;
       state.error = "";
       state.tickets = action.payload;
+      state.filtredTickets = action.payload;
     },
     ticketsFetchingError(state, action: PayloadAction<string>) {
       state.isLoading = false;
@@ -47,12 +50,16 @@ export const ticketSlice = createSlice({
         }
       });
 
-      const activeFilters = state.filters.filter((filter) => filter.isActive);
+      const activeFilters = current(state.filters).filter(
+        (filter) => filter.isActive
+      );
+      console.log("!!!", activeFilters, current(state.filters));
       activeFilters.forEach((filter) => {
         const filtredTickets = state.tickets.filter(
           (ticket) => ticket.stops === filter.value
         );
-        state.tickets = filtredTickets;
+        console.log(filtredTickets);
+        state.filtredTickets = filtredTickets;
       });
     },
   },
