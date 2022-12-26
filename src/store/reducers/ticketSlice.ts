@@ -53,14 +53,16 @@ export const ticketSlice = createSlice({
       const activeFilters = current(state.filters).filter(
         (filter) => filter.isActive
       );
-      console.log("!!!", activeFilters, current(state.filters));
+      const accTicketsArr: ITicket[] = [];
       activeFilters.forEach((filter) => {
-        const filteredTickets = state.tickets.filter(
+        const matchTickets = state.tickets.filter(
           (ticket) => ticket.stops === filter.value
         );
-        console.log(filteredTickets);
-        state.filteredTickets = filteredTickets;
+        matchTickets.forEach((ticket) => {
+          accTicketsArr.push(ticket);
+        });
       });
+      state.filteredTickets = accTicketsArr;
     },
   },
 });
